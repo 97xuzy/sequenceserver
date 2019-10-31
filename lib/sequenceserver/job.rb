@@ -8,7 +8,7 @@ require 'securerandom'
 require 'sequenceserver/pool'
 require 'sequenceserver/api_errors'
 
-require 'sequenceserver/cache'
+require 'sequenceserver/cache_redis'
 
 module SequenceServer
   # Abstract job super class.
