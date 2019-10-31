@@ -12,7 +12,8 @@ module SequenceServer
     @@cache = nil
     class << self
       def enabled?
-        return SequenceServer::config[:cache] == "enable"
+        #return SequenceServer::config[:cache] == "enable"
+        return true
       end
     end
 
