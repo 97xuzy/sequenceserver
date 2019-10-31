@@ -33,7 +33,8 @@ env:
   global:
     - CC_TEST_REPORTER_ID=ec48bb03c72db6b43ce71fd488110b4707abfde4386c144d886d711378d8db64
 before_script:
-  - redis-server
+  - redis-server &
+  - echo $! > ~/redis_pid.txt
   # Create configuration file for SequenceServer. FIXME: this should not
   # really be required for running test suite, but it is at the moment
   - bundle exec bin/sequenceserver -s -d spec/database/sample
@@ -48,6 +49,7 @@ after_script:
   - if [ "${TRAVIS_BUILD_STAGE_NAME}" = "Test" ]; then
       cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT;
     fi
+  - cat ~/redis_pid.txt | xargs -I {} kill {}
 
 jobs:
   include:
