@@ -63,7 +63,7 @@ module SequenceServer
 
     # Remove job from cache
     def remove(job)
-      return if @redis?
+      return if @redis.nil?
 
       begin
         @redis.del(job.cache_key, job.id)
@@ -74,7 +74,7 @@ module SequenceServer
 
     # Flush the redis instance
     def flush
-      return if @redis?
+      return if @redis.nil?
 
       begin
         @redis.flushall
