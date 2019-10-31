@@ -10,6 +10,7 @@ cache:
   bundler: true
 
 before_install:
+  - sudo apt-get -qq -y install redis-server
   # We will download geckodriver, codeclimate test reporter, and NCBI BLAST+ to
   # opt/. opt/ is cached to speed up subsequent runs. codeclimate test reporter
   # and geckodriver contain a single executable and are thus placed in opt/bin,
@@ -32,6 +33,7 @@ env:
   global:
     - CC_TEST_REPORTER_ID=ec48bb03c72db6b43ce71fd488110b4707abfde4386c144d886d711378d8db64
 before_script:
+  - redis-server
   # Create configuration file for SequenceServer. FIXME: this should not
   # really be required for running test suite, but it is at the moment
   - bundle exec bin/sequenceserver -s -d spec/database/sample
