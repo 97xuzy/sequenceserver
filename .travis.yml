@@ -7,7 +7,6 @@ rvm:
 branches:
   only:
     - 1.0.x  # stable
-    - master
 
 cache:
   directories:
