@@ -9,6 +9,7 @@ module SequenceServer
   # cache to check if this search has been run before.
   # If the job has been run before, redirect to the previous jobid
   class Cache
+    @@cache = nil
     class << self
       def enabled?
         return SequenceServer::config[:cache] == "enable"
@@ -17,29 +18,32 @@ module SequenceServer
 
     def initialize()
       return unless Cache.enabled?
-      return if !! @cache
       SequenceServer::logger.info("Cache initialized")
-      @cache = {}
+      @@cache = {}
     end
 
     # Query the cache
     def exist?(key)
-      jobid = @cache[key]
+      return nil if @@cache.nil?
+      jobid = @@cache[key]
     end
 
     # Insert the job into cache
     def insert(job)
-      @cache[job.cache_key] = job.id
+      return if @@cache.nil?
+      @@cache[job.cache_key] = job.id
     end
 
     # Remove job from cache
     def remove(job)
-      @cache.delete(job.cache_key)
+      return if @@cache.nil?
+      @@cache.delete(job.cache_key)
     end
 
     # Flush the redis instance
     def flush
-      @cache.clear
+      return if @@cache.nil?
+      @@cache.clear
     end
   end
 end

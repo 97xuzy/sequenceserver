@@ -20,7 +20,7 @@ module SequenceServer
     def initialize(port = 6379)
       return unless Cache.enabled?
 
-      return if !! @redis
+      return if @redis.nil?
 
       begin
         @redis = Redis.new(:port => port, :timeout => 1)
@@ -34,7 +34,7 @@ module SequenceServer
 
     # Query the cache
     def exist?(key)
-      return nil unless !! @redis
+      return nil if @redis.nil?
 
       begin
         jobid = @redis.get(key)
@@ -47,7 +47,7 @@ module SequenceServer
 
     # Insert the job into cache
     def insert(job)
-      return unless !! @redis
+      return if @redis.nil?
 
       # redis has a max length of 512MB
       return if job.cache_key.length >= 536870912
@@ -63,7 +63,7 @@ module SequenceServer
 
     # Remove job from cache
     def remove(job)
-      return unless !! @redis
+      return if @redis?
 
       begin
         @redis.del(job.cache_key, job.id)
@@ -74,7 +74,7 @@ module SequenceServer
 
     # Flush the redis instance
     def flush
-      return unless !! @redis
+      return if @redis?
 
       begin
         @redis.flushall
